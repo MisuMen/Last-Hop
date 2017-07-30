@@ -18,13 +18,15 @@
     <sprite>sprites\spr_slope1</sprite>
     <sprite>sprites\spr_enemy</sprite>
     <sprite>sprites\spr_seed</sprite>
-    <sprite>sprites\spr_seed_meter</sprite>
+    <sprite>sprites\spr_hp_meter1</sprite>
+    <sprite>sprites\spr_hp_meter2</sprite>
+    <sprite>sprites\spr_hp_meter3</sprite>
+    <sprite>sprites\spr_hp_meter4</sprite>
     <sprite>sprites\spr_fly</sprite>
     <sprite>sprites\spr_bee</sprite>
     <sprite>sprites\spr_lady</sprite>
     <sprite>sprites\spr_tornado</sprite>
     <sprite>sprites\spr_hercules</sprite>
-    <sprite>sprites\sprite11</sprite>
     <sprite>sprites\sprite12</sprite>
     <sprite>sprites\sprite13</sprite>
     <sprite>sprites\backpack_ico</sprite>
@@ -41,6 +43,8 @@
   <backgrounds name="background">
     <backgrounds name="level_back">
       <background>background\back1</background>
+      <background>background\back1_2</background>
+      <background>background\back1_3</background>
     </backgrounds>
     <backgrounds name="templates">
       <background>background\background1</background>
@@ -56,6 +60,14 @@
   </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
+    <scripts name="particles">
+      <script>scripts\particle_create.gml</script>
+      <script>scripts\particle_random.gml</script>
+      <script>scripts\particle_random_colour.gml</script>
+      <script>scripts\particle_set.gml</script>
+      <script>scripts\particle_colour.gml</script>
+      <script>scripts\particle_update.gml</script>
+    </scripts>
     <scripts name="timer">
       <script>scripts\scr_set_time.gml</script>
       <script>scripts\scr_update_time.gml</script>
@@ -77,6 +89,9 @@
   <shaders name="shaders">
     <shader type="GLSLES">shaders\shd_radialblur.shader</shader>
     <shader type="GLSLES">shaders\shd_wave.shader</shader>
+    <shader type="GLSLES">shaders\shader_meter.shader</shader>
+    <shader type="GLSLES">shaders\shd_guassianblur.shader</shader>
+    <shader type="GLSLES">shaders\shd_wither.shader</shader>
   </shaders>
   <fonts name="fonts">
     <font>fonts\font0</font>
@@ -92,28 +107,37 @@
     <object>objects\oHercules</object>
     <object>objects\oEne</object>
     <object>objects\oCrystal</object>
+    <object>objects\oLadybug</object>
+    <object>objects\oTorn</object>
+    <objects name="Systems">
+      <object>objects\Menu_System</object>
+      <object>objects\oDialogue</object>
+      <object>objects\oLoadingProp</object>
+      <object>objects\oPartSys</object>
+      <object>objects\oGameOver</object>
+      <object>objects\oScrollBack</object>
+    </objects>
     <objects name="parents">
       <object>objects\oBad1</object>
     </objects>
-    <object>objects\oLadybug</object>
-    <object>objects\oTorn</object>
-    <object>objects\Menu_System</object>
-    <object>objects\plate1</object>
-    <object>objects\plate_system</object>
-    <object>objects\oMP_Plyer</object>
-    <object>objects\oDialogue</object>
-    <object>objects\stem</object>
-    <object>objects\oLoadingProp</object>
+    <objects name="Map">
+      <object>objects\plate1</object>
+      <object>objects\oMP_Plyer</object>
+      <object>objects\plate_system</object>
+      <object>objects\stem</object>
+    </objects>
     <object>objects\oCheckPoint</object>
     <object>objects\oGoal</object>
-    <object>objects\oPartSys</object>
     <object>objects\oWater</object>
-    <object>objects\oDistortion</object>
+    <object>objects\oDust</object>
+    <object>objects\oCross</object>
+    <object>objects\oFirework</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\Menu</room>
     <room>rooms\room0</room>
     <room>rooms\Map1</room>
+    <room>rooms\rm_GameOver</room>
   </rooms>
   <help>
     <rtf>help.rtf</rtf>

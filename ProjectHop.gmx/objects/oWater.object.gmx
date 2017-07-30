@@ -25,11 +25,49 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>xx=x+64
-yy=y+32
+            <string>xscale = image_xscale*128
+nn=3
+l1=x
+l2=x+xscale
+WORLD_POSX[3]=0
+WORLD_POSY[3]=0
+for(var i = 0; i&lt;3; ++i)
+{
+ xx[i]=(x-64)+(i*64);
+ yy[i]= y+24
+}
 
-x1=x
-x2=x+128
+vertex_begin(global.WATER_IMG,global.VERT_WATER)
+
+for(var t_x = 0; t_x&lt;xscale; t_x++)
+{
+vertex_colour(global.WATER_IMG,c_white,1)
+vertex_texcoord(global.WATER_IMG,(t_x mod 128)/128,1) //0,0
+vertex_position(global.WATER_IMG,t_x,-64)
+
+vertex_colour(global.WATER_IMG,c_white,1)
+vertex_texcoord(global.WATER_IMG,(t_x mod 128)/128,0)
+vertex_position(global.WATER_IMG,t_x,64)
+
+vertex_colour(global.WATER_IMG,c_white,1)
+vertex_texcoord(global.WATER_IMG,((t_x+1) mod 128)/128,0)
+vertex_position(global.WATER_IMG,t_x+1,64)
+
+vertex_colour(global.WATER_IMG,c_white,1)
+vertex_texcoord(global.WATER_IMG,(t_x mod 128)/128,1) //0,0
+vertex_position(global.WATER_IMG,t_x,-64)
+
+vertex_colour(global.WATER_IMG,c_white,1)
+vertex_texcoord(global.WATER_IMG,((t_x+1) mod 128)/128,1)
+vertex_position(global.WATER_IMG,t_x+1,-64)
+
+vertex_colour(global.WATER_IMG,c_white,1)
+vertex_texcoord(global.WATER_IMG,((t_x+1) mod 128)/128,0)
+vertex_position(global.WATER_IMG,t_x+1,64)
+}
+
+vertex_end(global.WATER_IMG)
+vertex_freeze(global.WATER_IMG)
 </string>
           </argument>
         </arguments>
@@ -52,8 +90,11 @@ x2=x+128
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>xx+=2
-if xx &gt; x2 xx = x1
+            <string>for(var i = 0; i&lt;3; ++i)
+{
+ xx[i]+=2
+ if (xx[i] &gt; l2+64) {xx[i]=l1-64;}
+}
 </string>
           </argument>
         </arguments>
@@ -76,15 +117,21 @@ if xx &gt; x2 xx = x1
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>shader_set(shd_wave)
-shader_set_uniform_f(global.POS_DENSE,(xx-x)/128,clamp((yy-y),0,64)/512)
-
+            <string>for(var i = 0; i&lt;3; ++i)
+{
+WORLD_POSX[i] = (xx[i]-x)/xscale;
+WORLD_POSY[i] = (clamp((yy[i]-y),0,64)/512);
+}
+shader_set(shd_wave)
+shader_set_uniform_i(shader_get_uniform(shd_wave,'nn'),3)
+shader_set_uniform_f(shader_get_uniform(shd_wave,'size'),xscale)
+shader_set_uniform_f_array(global.POS_DENSE1,WORLD_POSX)
+shader_set_uniform_f_array(global.POS_DENSE2,WORLD_POSY)
 var myPos = matrix_build(x,y,0,0,0,0,1,1,1);
 matrix_set(matrix_world,myPos)
 vertex_submit(global.WATER_IMG,pr_trianglelist,global.tex1)
 myPos = matrix_build(0,0,0,0,0,0,1,1,1);
 matrix_set(matrix_world,myPos)
-
 shader_reset()
 </string>
           </argument>

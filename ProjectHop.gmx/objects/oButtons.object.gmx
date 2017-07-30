@@ -19,19 +19,21 @@
         <exetype>2</exetype>
         <functionname></functionname>
         <codestring></codestring>
-        <whoName>self</whoName>
+        <whoName>other</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
         <arguments>
           <argument>
             <kind>1</kind>
             <string>///Definitions///
+numa=0
 rot=0
 mot1=0
 rot_l=0
 trans=1
 ACTIVE=1
 INVENTORY=0
+LIFE_CHECK=0;
   fade=0
   INV_X=1800
   INV_Y=0
@@ -65,6 +67,36 @@ date_display = 0
   temp_timer=0
   duration=0
 scr_Statistic_Ini()
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///leaf animation var
+
+leaf_f1=0
+leaf_r1=0
+leaf_f2=0
+leaf_r2=0
+leaf_f3=0
+leaf_r3=0
+leaf_f4=0
+leaf_r4=0
 </string>
           </argument>
         </arguments>
@@ -136,6 +168,29 @@ if (rot_l)&amp;&amp;(rot&lt;45) rot+=rot_m
 if (rot_l==0)&amp;&amp;(rot&gt;-45) rot-=rot_m
 if (rot_l)&amp;&amp;(rot&gt;=45) rot_l=0
 if (rot_l==0)&amp;&amp;(rot&lt;=-45) rot_l=1
+
+global.HP += (keyboard_check(vk_pageup)-keyboard_check(vk_pagedown))*1;
+
+/////Leaf animation
+if (global.HP&lt;=0)
+{
+ if (LIFE_CHECK==1)
+ {
+  if (leaf_r1&lt;135) leaf_r1 +=5; else leaf_f1+=5
+ }
+ if (LIFE_CHECK==2)
+ {
+  if (leaf_r2&gt;-135) leaf_r2 -=5; else leaf_f2+=5
+ }
+ if (LIFE_CHECK==3)
+ {
+  if (leaf_r3&lt;45) leaf_r3 +=5; else leaf_f3+=5
+ }
+ if (LIFE_CHECK&gt;3)
+ {
+  if (leaf_r4&gt;-45) leaf_r4 -=5; else leaf_f4+=5
+ }
+}
 </string>
           </argument>
         </arguments>
@@ -552,10 +607,30 @@ draw_background(temp1,xx,yy-250)
 draw_set_colour(c_white)
 draw_set_alpha(1)
 texture_set_interpolation(1)
+//HP
+shader_set(shd_wither)
+shader_set_uniform_f(shader_get_uniform(shd_wither,"life"),global.HP_MAX-clamp(global.HP,0,global.HP_MAX));
+shader_set_uniform_f(shader_get_uniform(shd_wither,"maxi"),global.HP_MAX);
+shader_set_uniform_f(shader_get_uniform(shd_wither,"vida"),lives);
+shader_set_uniform_f(shader_get_uniform(shd_wither,"tick"),1);
+if (lives&gt;0) draw_sprite_ext(spr_hp_meter1,0,xx+100,yy+120+leaf_f1,0.75,0.75,(-rot/2)+leaf_r1,-1,1)
+shader_set_uniform_f(shader_get_uniform(shd_wither,"tick"),2);
+if (lives&gt;1) draw_sprite_ext(spr_hp_meter2,0,xx+100,yy+120+leaf_f2,0.75,0.75,(-rot/2)+leaf_r2,-1,1)
+shader_set_uniform_f(shader_get_uniform(shd_wither,"tick"),3);
+if (lives&gt;2) draw_sprite_ext(spr_hp_meter3,0,xx+100,yy+120+leaf_f3,0.75,0.75,(-rot/2)+leaf_r3,-1,1)
+shader_set_uniform_f(shader_get_uniform(shd_wither,"tick"),4);
+if (lives&gt;3) draw_sprite_ext(spr_hp_meter4,0,xx+100,yy+120+leaf_f4,0.75,0.75,(-rot/2)+leaf_r4,-1,1)
+shader_set_uniform_f(shader_get_uniform(shd_wither,"tick"),5);
+if (lives&gt;4) draw_sprite_ext(spr_hp_meter4,0,xx+100,yy+120+leaf_f4,0.75,0.75,(-rot/2)+leaf_r4,-1,1)
+shader_reset()
 
 var c = c_white;
+shader_set(shader_meter)
+shader_set_uniform_f(shader_get_uniform(shader_meter,"value"),1-(global.METER/100))
 draw_sprite_ext(spr_seed,0,xx+960,yy+120,2,2,rot/4,-1,1)///////////METER
-draw_sprite_ext(spr_head,0,xx+100,yy+120,0.75,0.75,-rot/2,-1,1)
+shader_reset()
+
+//draw_sprite_ext(spr_head,0,xx+100,yy+120,0.75,0.75,-rot/2,-1,1)
 if (INVENTORY)
 {
  ////////////INVENTORY DISPLAY////////////
@@ -654,7 +729,7 @@ if oPlyer.stall==0
 scr_ShowMessage_date("Some seeds haven't respawn#here yet. You'll have to wait...",
                     "Don't want to wait so long?#Respawn them at the shop!",6)
 draw_set_halign(fa_left)
-draw_healthbar(xx+480,yy+1020,xx+1440,yy+1070,global.METER/2,0,col,col,0,0,0)
+//draw_healthbar(xx+480,yy+1020,xx+1440,yy+1070,global.METER/2,0,col,col,0,0,0)
 }}
 draw_set_alpha(trans)
 draw_rectangle_colour(xx-32,yy-32,xx+1992,yy+1100,c,c,c,c,0)

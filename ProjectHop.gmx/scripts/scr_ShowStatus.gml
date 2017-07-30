@@ -91,7 +91,7 @@ if sign(statistic4)
  if statistic4==1 
  {
   if s_count4 < ((s_count3*10)+(s_count2*10)){++s_count4; global.XP++}
-  if global.XP >= global.NXT {global.XP = 0; global.NXT+=500; global.LEVEL++}
+  if global.XP >= global.NXT {global.XP = 0; global.NXT+=500; global.HP_MAX+=10; global.LEVEL++}
   if s_count4 >= ((s_count3*10)+(s_count2*10)) {statistic4 = 2; statistic5=1}
  }
  draw_text_transformed_colour(xx+1280,yy+570,string(global.XP)+" / "+string(global.NXT),0.75,0.75,0,c_white,c_white,c_white,c_white,1)

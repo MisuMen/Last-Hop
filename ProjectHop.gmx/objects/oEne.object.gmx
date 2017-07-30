@@ -26,20 +26,19 @@
           <argument>
             <kind>1</kind>
             <string>randomize()
-jk = 0;
+///Variables
+jk = 0; //jump key trigger
 SPR = sprite_index;
-IMG = 0;
-grav =0.2;
-hsp = 0;
-vsp = 0;
-jump = 7;
-move = 4;
-dir = choose(-1,1);
-temp_m=0;
-pressed=0;
-launch=0
-ROT=0
-r_m = irandom_range(22,45);
+IMG = 0; //Image index
+grav =0.2;// gravity value
+hsp = 0; // dynamic horizontal movement speed
+vsp = 0; // dynamic vertical movement speed
+jump = 7; // jump speed
+move = 4; // move soeed when keypressed
+dir = choose(-1,1); //which way the enemy faces to move
+launch=0 //if the enemy is being launched from attack
+ROT=0 //rotation of the enemy
+r_m = irandom_range(22,45); 
 
 earn = 50;///SCORE
 </string>
@@ -64,35 +63,10 @@ earn = 50;///SCORE
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>instance_destroy()
-++global.MOB_KILL;
-score+=earn
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="2" enumb="0">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>pressed=0
-move = 4
-SPR = spr_player
-IMG = 0
+            <string>///When enemy dies
+instance_destroy()
+++global.MOB_KILL;// &lt;--- increase mob count for the scoreboard when passing level
+score+=earn //&lt;----- points you earn from killing enemy
 </string>
           </argument>
         </arguments>
@@ -118,10 +92,11 @@ IMG = 0
             <string>///movement and physics
 if (oButtons.INVENTORY==0)
 {
+//movement
 var mm = dir;
-if move==8 {mm=temp_m}
 hsp = mm * move;
 
+//Launched from attack
 var v = 0;
 if (launch)
 {
@@ -129,7 +104,7 @@ if (launch)
  v = lengthdir_y(32,abs((180*sign(oPlyer.image_xscale-1))+r_m));
  ROT += 16*sign(image_xscale);
 }
-
+//gravity
 if (vsp &lt; 10) vsp += grav;
 
 /////////////////COLLISION////////////////////
@@ -171,101 +146,6 @@ y+=vsp+v
         </arguments>
       </action>
     </event>
-    <event eventtype="7" enumb="15">
-      <action>
-        <libid>1</libid>
-        <id>605</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string></string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="7" enumb="14">
-      <action>
-        <libid>1</libid>
-        <id>605</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string></string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="7" enumb="13">
-      <action>
-        <libid>1</libid>
-        <id>605</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>slide</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>if pressed ==0
-{
-temp_m = dir;
-move=8
-pressed=1
-alarm[0]=30
-SPR = spr_pl_poses
-if temp_m != 0 {IMG = 1} else {IMG = 0}
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
     <event eventtype="7" enumb="12">
       <action>
         <libid>1</libid>
@@ -283,7 +163,8 @@ if temp_m != 0 {IMG = 1} else {IMG = 0}
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>jk = 1
+            <string>///jump
+jk = 1
 </string>
           </argument>
         </arguments>
@@ -306,7 +187,8 @@ if temp_m != 0 {IMG = 1} else {IMG = 0}
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>dir = -1
+            <string>///move left
+dir = -1
 </string>
           </argument>
         </arguments>
@@ -329,7 +211,8 @@ if temp_m != 0 {IMG = 1} else {IMG = 0}
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>dir = 1
+            <string>///move right
+dir = 1
 </string>
           </argument>
         </arguments>
@@ -352,7 +235,8 @@ if temp_m != 0 {IMG = 1} else {IMG = 0}
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if y&gt;480 instance_destroy()
+            <string>///destroy enemy if it falls into a hole
+if y&gt;480 instance_destroy()
 </string>
           </argument>
         </arguments>

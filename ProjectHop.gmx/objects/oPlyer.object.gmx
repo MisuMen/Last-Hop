@@ -30,7 +30,7 @@ SPR = sprite_index;
 image_speed=0
 IMG = 0;
 DIE = 0;
-
+DAMAGE=10;
 jk = 0;
 air= 0;
 grav =0.4;
@@ -325,7 +325,6 @@ instance_destroy()
           <argument>
             <kind>1</kind>
             <string>fall = 1
-
 alarm[2]=160
 </string>
           </argument>
@@ -445,7 +444,7 @@ var mm = move_right - move_left;
 if move==12 {mm=temp_m}
 hsp = (mm * move);
 
-if hsp != 0 {if SPR==spr_player {IMG+=(0.3); if (IMG&gt;6) IMG=0}}else{if air==0 IMG=0}
+if hsp != 0 {if SPR==spr_player {IMG+=(0.3); if (IMG&gt;15) IMG=0}}else{if air==0 IMG=0}
 if SPR==spr_jump {if IMG &lt; 4 IMG += (0.5)}
 ////////////////PHYSICS////////////////////////
 if (vsp &lt; 16)&amp;&amp;(hover==0) vsp += (grav);
@@ -558,9 +557,13 @@ if (place_meeting(x+hsp,y,oBad1))
  }
  else
  {
- //hsp = 0;
- alarm[1]=40;
- DIE = 1;
+  global.HP-=DAMAGE;
+  if global.HP&lt;=0
+  {
+    alarm[1]=40;
+    oButtons.LIFE_CHECK=lives
+    DIE = 1;
+  }
  }
  exit
 }
@@ -609,6 +612,13 @@ global.METER = 0; POW=0; POW_X=0; POW_X2=0; powerup=0; hover=0; SHOOT=0;
 if POW == 1 &amp;&amp; POW_X==1 &amp;&amp; POW_X2==1 global.METER-=0.1
 
 if lives &gt; 99 lives=99
+
+if global.HP &lt;=0
+{
+    alarm[1]=20;
+    oButtons.LIFE_CHECK=lives
+    DIE = 1;
+}
 //////Timer to fix the frame image bug
 if (air==2)
 {
@@ -1063,10 +1073,12 @@ image_xscale = 1
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if y&gt;480 
+            <string>if y&gt;480 &amp;&amp; DIE==0
 {
-instance_destroy()
-}//game_restart()
+    alarm[1]=20;
+    oButtons.LIFE_CHECK=lives
+    DIE = 1;
+}
 </string>
           </argument>
         </arguments>

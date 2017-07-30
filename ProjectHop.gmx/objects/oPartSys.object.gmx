@@ -34,39 +34,8 @@ global.VERT_WATER=vertex_format_end()
 
 global.WATER_IMG =vertex_create_buffer()
 
-vertex_begin(global.WATER_IMG,global.VERT_WATER)
-
-for(var t_x = 0; t_x&lt;128; t_x++)
-{
-vertex_colour(global.WATER_IMG,c_white,1)
-vertex_texcoord(global.WATER_IMG,(t_x)/128,1) //0,0
-vertex_position(global.WATER_IMG,t_x,-64)
-
-vertex_colour(global.WATER_IMG,c_white,1)
-vertex_texcoord(global.WATER_IMG,(t_x)/128,0)
-vertex_position(global.WATER_IMG,t_x,64)
-
-vertex_colour(global.WATER_IMG,c_white,1)
-vertex_texcoord(global.WATER_IMG,(t_x+1)/128,0)
-vertex_position(global.WATER_IMG,t_x+1,64)
-
-vertex_colour(global.WATER_IMG,c_white,1)
-vertex_texcoord(global.WATER_IMG,(t_x)/128,1) //0,0
-vertex_position(global.WATER_IMG,t_x,-64)
-
-vertex_colour(global.WATER_IMG,c_white,1)
-vertex_texcoord(global.WATER_IMG,(t_x+1)/128,1)
-vertex_position(global.WATER_IMG,t_x+1,-64)
-
-vertex_colour(global.WATER_IMG,c_white,1)
-vertex_texcoord(global.WATER_IMG,(t_x+1)/128,0)
-vertex_position(global.WATER_IMG,t_x+1,64)
-}
-
-vertex_end(global.WATER_IMG)
-vertex_freeze(global.WATER_IMG)
-
-global.POS_DENSE = shader_get_uniform(shd_wave,'pos');
+global.POS_DENSE1 = shader_get_uniform(shd_wave,'pos_x');
+global.POS_DENSE2 = shader_get_uniform(shd_wave,'pos_y');
 </string>
           </argument>
         </arguments>

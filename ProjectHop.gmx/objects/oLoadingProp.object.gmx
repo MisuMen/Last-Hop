@@ -32,6 +32,8 @@ global.LVL=0
 global.LEVEL=0
 global.NXT=0
 global.NAME=0
+global.HP = 10;
+global.HP_MAX=10;
 if file_exists(working_directory+"property.gro")
 {
  global.PROP = buffer_create(25*4,buffer_fixed,4);
@@ -44,19 +46,21 @@ if file_exists(working_directory+"property.gro")
  global.XP = buffer_peek(global.PROP,20,buffer_u32);
  global.NXT = buffer_peek(global.PROP,24,buffer_u32);
  global.NAME = buffer_peek(global.PROP,28,buffer_u32);
+ global.HP_MAX = buffer_peek(global.PROP,32,buffer_u32);
+ //global.HP = buffer_peek(global.PROP,36,buffer_u32);
  
- global.SLOT_1_1 = buffer_peek(global.PROP,32,buffer_u32);
- global.SLOT_2_1 = buffer_peek(global.PROP,36,buffer_u32);
- global.SLOT_3_1 = buffer_peek(global.PROP,40,buffer_u32);
- global.SLOT_4_1 = buffer_peek(global.PROP,44,buffer_u32);
- global.SLOT_1_2 = buffer_peek(global.PROP,48,buffer_u32);
- global.SLOT_2_2 = buffer_peek(global.PROP,52,buffer_u32);
- global.SLOT_3_2 = buffer_peek(global.PROP,56,buffer_u32);
- global.SLOT_4_2 = buffer_peek(global.PROP,60,buffer_u32);
- global.SLOT_1_3 = buffer_peek(global.PROP,64,buffer_u32);
- global.SLOT_2_3 = buffer_peek(global.PROP,68,buffer_u32);
- global.SLOT_3_3 = buffer_peek(global.PROP,72,buffer_u32);
- global.SLOT_4_3 = buffer_peek(global.PROP,76,buffer_u32);
+ global.SLOT_1_1 = buffer_peek(global.PROP,52,buffer_u32);
+ global.SLOT_2_1 = buffer_peek(global.PROP,56,buffer_u32);
+ global.SLOT_3_1 = buffer_peek(global.PROP,60,buffer_u32);
+ global.SLOT_4_1 = buffer_peek(global.PROP,64,buffer_u32);
+ global.SLOT_1_2 = buffer_peek(global.PROP,68,buffer_u32);
+ global.SLOT_2_2 = buffer_peek(global.PROP,72,buffer_u32);
+ global.SLOT_3_2 = buffer_peek(global.PROP,76,buffer_u32);
+ global.SLOT_4_2 = buffer_peek(global.PROP,80,buffer_u32);
+ global.SLOT_1_3 = buffer_peek(global.PROP,84,buffer_u32);
+ global.SLOT_2_3 = buffer_peek(global.PROP,88,buffer_u32);
+ global.SLOT_3_3 = buffer_peek(global.PROP,92,buffer_u32);
+ global.SLOT_4_3 = buffer_peek(global.PROP,96,buffer_u32);
 }
 else
 {
@@ -82,12 +86,8 @@ else
  buffer_poke(global.PROP,20,buffer_u32,0);
  buffer_poke(global.PROP,24,buffer_u32,500);
  buffer_poke(global.PROP,28,buffer_u32,0);
+ buffer_poke(global.PROP,32,buffer_u32,global.HP_MAX);
  
- buffer_poke(global.PROP,32,buffer_u32,0);
- buffer_poke(global.PROP,36,buffer_u32,0);
- buffer_poke(global.PROP,40,buffer_u32,0);
- buffer_poke(global.PROP,44,buffer_u32,0);
- buffer_poke(global.PROP,48,buffer_u32,0);
  buffer_poke(global.PROP,52,buffer_u32,0);
  buffer_poke(global.PROP,56,buffer_u32,0);
  buffer_poke(global.PROP,60,buffer_u32,0);
@@ -95,6 +95,11 @@ else
  buffer_poke(global.PROP,68,buffer_u32,0);
  buffer_poke(global.PROP,72,buffer_u32,0);
  buffer_poke(global.PROP,76,buffer_u32,0);
+ buffer_poke(global.PROP,80,buffer_u32,0);
+ buffer_poke(global.PROP,84,buffer_u32,0);
+ buffer_poke(global.PROP,88,buffer_u32,0);
+ buffer_poke(global.PROP,92,buffer_u32,0);
+ buffer_poke(global.PROP,96,buffer_u32,0);
  buffer_save(global.PROP,working_directory+"property.gro");
 }
 </string>
@@ -125,7 +130,7 @@ global.CH_PNT=0;
 global.DATE=0;
 global.CH_X=0;
 global.CH_Y=0;
-
+global.STAGE_PROP = -1
 if !file_exists(working_directory+"worlds.gro")
 {
  global.STAGE_PROP = buffer_create((20*80)*4,buffer_fixed,4);
@@ -170,7 +175,7 @@ seed_count=0;
 seed_collect=0;
 seed_x = 0;
 seed_y = 0;
-
+global.SEED_PROP = -1;
 if !file_exists(working_directory+"sm.gro")
 {
  global.SEED_PROP = buffer_create((240*80)*2,buffer_fixed,2);
@@ -260,19 +265,21 @@ if file_exists(working_directory+"property.gro")
  buffer_poke(global.PROP,16,buffer_u32,global.LEVEL);
  buffer_poke(global.PROP,20,buffer_u32,global.XP);
  buffer_poke(global.PROP,24,buffer_u32,global.NXT);
+ buffer_poke(global.PROP,32,buffer_u32,global.HP_MAX);
+ buffer_poke(global.PROP,36,buffer_u32,global.HP);
  
- buffer_poke(global.PROP,32,buffer_u32,global.SLOT_1_1);
- buffer_poke(global.PROP,36,buffer_u32,global.SLOT_2_1);
- buffer_poke(global.PROP,40,buffer_u32,global.SLOT_3_1);
- buffer_poke(global.PROP,44,buffer_u32,global.SLOT_4_1);
- buffer_poke(global.PROP,48,buffer_u32,global.SLOT_1_2);
- buffer_poke(global.PROP,52,buffer_u32,global.SLOT_2_2);
- buffer_poke(global.PROP,56,buffer_u32,global.SLOT_3_2);
- buffer_poke(global.PROP,60,buffer_u32,global.SLOT_4_2);
- buffer_poke(global.PROP,64,buffer_u32,global.SLOT_1_3);
- buffer_poke(global.PROP,68,buffer_u32,global.SLOT_2_3);
- buffer_poke(global.PROP,72,buffer_u32,global.SLOT_3_3);
- buffer_poke(global.PROP,76,buffer_u32,global.SLOT_4_3);
+ buffer_poke(global.PROP,52,buffer_u32,global.SLOT_1_1);
+ buffer_poke(global.PROP,56,buffer_u32,global.SLOT_2_1);
+ buffer_poke(global.PROP,60,buffer_u32,global.SLOT_3_1);
+ buffer_poke(global.PROP,64,buffer_u32,global.SLOT_4_1);
+ buffer_poke(global.PROP,68,buffer_u32,global.SLOT_1_2);
+ buffer_poke(global.PROP,72,buffer_u32,global.SLOT_2_2);
+ buffer_poke(global.PROP,76,buffer_u32,global.SLOT_3_2);
+ buffer_poke(global.PROP,80,buffer_u32,global.SLOT_4_2);
+ buffer_poke(global.PROP,84,buffer_u32,global.SLOT_1_3);
+ buffer_poke(global.PROP,88,buffer_u32,global.SLOT_2_3);
+ buffer_poke(global.PROP,92,buffer_u32,global.SLOT_3_3);
+ buffer_poke(global.PROP,96,buffer_u32,global.SLOT_4_3);
  buffer_save(global.PROP,working_directory+"property.gro");
 }
 else show_error("Property file missing!",1)//Show error message
@@ -392,6 +399,7 @@ alarm[0] = 60
             <string>///player properties
 global.METER-=10;
 if global.METER&lt;0 global.METER=0
+global.HP = global.HP_MAX;
 if file_exists(working_directory+"property.gro")
 {
  buffer_poke(global.PROP,0,buffer_u32,lives);
@@ -401,19 +409,21 @@ if file_exists(working_directory+"property.gro")
  buffer_poke(global.PROP,16,buffer_u32,global.LEVEL);
  buffer_poke(global.PROP,20,buffer_u32,global.XP);
  buffer_poke(global.PROP,24,buffer_u32,global.NXT);
+ buffer_poke(global.PROP,32,buffer_u32,global.HP_MAX);
+ buffer_poke(global.PROP,36,buffer_u32,global.HP);
  
- buffer_poke(global.PROP,32,buffer_u32,global.SLOT_1_1);
- buffer_poke(global.PROP,36,buffer_u32,global.SLOT_2_1);
- buffer_poke(global.PROP,40,buffer_u32,global.SLOT_3_1);
- buffer_poke(global.PROP,44,buffer_u32,global.SLOT_4_1);
- buffer_poke(global.PROP,48,buffer_u32,global.SLOT_1_2);
- buffer_poke(global.PROP,52,buffer_u32,global.SLOT_2_2);
- buffer_poke(global.PROP,56,buffer_u32,global.SLOT_3_2);
- buffer_poke(global.PROP,60,buffer_u32,global.SLOT_4_2);
- buffer_poke(global.PROP,64,buffer_u32,global.SLOT_1_3);
- buffer_poke(global.PROP,68,buffer_u32,global.SLOT_2_3);
- buffer_poke(global.PROP,72,buffer_u32,global.SLOT_3_3);
- buffer_poke(global.PROP,76,buffer_u32,global.SLOT_4_3);
+ buffer_poke(global.PROP,52,buffer_u32,global.SLOT_1_1);
+ buffer_poke(global.PROP,56,buffer_u32,global.SLOT_2_1);
+ buffer_poke(global.PROP,60,buffer_u32,global.SLOT_3_1);
+ buffer_poke(global.PROP,64,buffer_u32,global.SLOT_4_1);
+ buffer_poke(global.PROP,68,buffer_u32,global.SLOT_1_2);
+ buffer_poke(global.PROP,72,buffer_u32,global.SLOT_2_2);
+ buffer_poke(global.PROP,76,buffer_u32,global.SLOT_3_2);
+ buffer_poke(global.PROP,80,buffer_u32,global.SLOT_4_2);
+ buffer_poke(global.PROP,84,buffer_u32,global.SLOT_1_3);
+ buffer_poke(global.PROP,88,buffer_u32,global.SLOT_2_3);
+ buffer_poke(global.PROP,92,buffer_u32,global.SLOT_3_3);
+ buffer_poke(global.PROP,96,buffer_u32,global.SLOT_4_3);
  buffer_save(global.PROP,working_directory+"property.gro");
 }
 else show_error("Property file missing!",1)//Show error message
@@ -569,19 +579,21 @@ if file_exists(working_directory+"property.gro")
  global.XP = buffer_peek(global.PROP,20,buffer_u32);
  global.NXT = buffer_peek(global.PROP,24,buffer_u32);
  global.NAME = buffer_peek(global.PROP,28,buffer_u32);
- 
- global.SLOT_1_1 = buffer_peek(global.PROP,32,buffer_u32);
- global.SLOT_2_1 = buffer_peek(global.PROP,36,buffer_u32);
- global.SLOT_3_1 = buffer_peek(global.PROP,40,buffer_u32);
- global.SLOT_4_1 = buffer_peek(global.PROP,44,buffer_u32);
- global.SLOT_1_2 = buffer_peek(global.PROP,48,buffer_u32);
- global.SLOT_2_2 = buffer_peek(global.PROP,52,buffer_u32);
- global.SLOT_3_2 = buffer_peek(global.PROP,56,buffer_u32);
- global.SLOT_4_2 = buffer_peek(global.PROP,60,buffer_u32);
- global.SLOT_1_3 = buffer_peek(global.PROP,64,buffer_u32);
- global.SLOT_2_3 = buffer_peek(global.PROP,68,buffer_u32);
- global.SLOT_3_3 = buffer_peek(global.PROP,72,buffer_u32);
- global.SLOT_4_3 = buffer_peek(global.PROP,76,buffer_u32);
+ global.HP_MAX = buffer_peek(global.PROP,32,buffer_u32);
+ global.HP = buffer_peek(global.PROP,36,buffer_u32);
+ if (global.HP == 0) {global.HP = global.HP_MAX;}
+ global.SLOT_1_1 = buffer_peek(global.PROP,52,buffer_u32);
+ global.SLOT_2_1 = buffer_peek(global.PROP,56,buffer_u32);
+ global.SLOT_3_1 = buffer_peek(global.PROP,60,buffer_u32);
+ global.SLOT_4_1 = buffer_peek(global.PROP,64,buffer_u32);
+ global.SLOT_1_2 = buffer_peek(global.PROP,68,buffer_u32);
+ global.SLOT_2_2 = buffer_peek(global.PROP,72,buffer_u32);
+ global.SLOT_3_2 = buffer_peek(global.PROP,76,buffer_u32);
+ global.SLOT_4_2 = buffer_peek(global.PROP,80,buffer_u32);
+ global.SLOT_1_3 = buffer_peek(global.PROP,84,buffer_u32);
+ global.SLOT_2_3 = buffer_peek(global.PROP,88,buffer_u32);
+ global.SLOT_3_3 = buffer_peek(global.PROP,92,buffer_u32);
+ global.SLOT_4_3 = buffer_peek(global.PROP,96,buffer_u32);
 }else show_error("Missing Property file!",1)
 }
 </string>
