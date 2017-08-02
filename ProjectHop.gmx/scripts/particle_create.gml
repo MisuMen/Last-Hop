@@ -1,4 +1,4 @@
-///particle_create(ind,image,count,min time,max time,min death,max death)
+///particle_create(ind,image,count,min time,max time,min death,max death,end)
 var n = argument0;
 PART_MAX[n] = argument2;
 PART_I[n]=argument1;
@@ -27,6 +27,7 @@ SHFT_CR[n]=0;
 SHFT_CG[n]=0;
 SHFT_CB[n]=0;
 SHFT_CA[n]=0;
+P_END[n]=argument7
 PR_T1[n]=floor(argument3);
 PR_T2[n]=floor(argument4);
 PR_D1[n]=floor(argument5);

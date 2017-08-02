@@ -26,6 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>///Bunch of variables
+shake =0
 SPR = sprite_index;
 image_speed=0
 IMG = 0;
@@ -463,6 +464,7 @@ if (place_meeting(x,y+1,oBox))&amp;&amp;(hover==0)
 var pp = instance_place(x,y+1,oBox);
 if (y+120 &lt; pp.y)
 {
+ if (vsp&gt;0)&amp;&amp;(air&gt;0){instance_create(x,y+120,oDust);}
  vsp = (jk * -jump);
  if (SPR==spr_jump)&amp;&amp;(air&lt;2) {SPR = spr_player; air=0}///Bug
  if (ROLL &amp;&amp; DIR==0)
@@ -479,6 +481,7 @@ if (y+120 &lt; pp.y)
 }//
 if (place_meeting(x,y+1,oBox2))&amp;&amp;(hover==0)
 {
+ if (vsp&gt;0)&amp;&amp;(air&gt;0){instance_create(x,y+120,oDust);}
  vsp =  (jk * -jump);
  if (SPR==spr_jump)&amp;&amp;(air&lt;2) {SPR = spr_player;  air=0}///Bug
  if (ROLL &amp;&amp; DIR==0)
@@ -536,6 +539,7 @@ if (place_meeting(x,y+vsp,oBox))
  if (y+120 &lt; ii.y) &amp;&amp; vsp&gt;0
  {
  while(!place_meeting(x,y+sign(vsp),oBox)){y += sign(vsp);}
+ instance_create(x,y+120,oDust);
  vsp = 0;
  jk=0
  }
@@ -544,6 +548,7 @@ if (place_meeting(x,y+vsp,oBox))
 if (place_meeting(x,y+vsp,oBox2))
 {
  while(!place_meeting(x,y+sign(vsp),oBox2)){y += sign(vsp);}
+ instance_create(x,y+120,oDust);
  vsp = 0;
  jk=0
 }
@@ -553,7 +558,10 @@ if (place_meeting(x+hsp,y,oBad1))
  while(!place_meeting(x+sign(hsp),y,oBad1)){x += sign(hsp);}
  if IMG==1 
  {
- with(instance_place(x,y+1,oBad1)){alarm[1]=60; oButtons.mot1=1; launch=1}
+  var ii = instance_place(x,y+1,oBad1);
+  instance_create(x,y,oCross);
+  shake=16
+  with(ii){alarm[1]=60; oButtons.mot1=1; launch=1}
  }
  else
  {
@@ -571,8 +579,11 @@ if (place_meeting(x,y+abs(vsp),oBad1))
 {
  while(!place_meeting(x,y+1,oBad1)){y += 1;}
  with(instance_place(x,y+1,oBad1)){instance_destroy();global.MOB_KILL++}
+ instance_create(x,y+120,oDust);
+ instance_create(x,y+120,oCross);
  vsp = -jump;
  score+=100
+ shake=8
  exit
 }
 y+=vsp
@@ -625,6 +636,8 @@ if (air==2)
  f_xc += 0.2;
  if f_xc == 1{f_xc=0; air=1}
 }
+//////SHAKE
+screen_shake()
 </string>
           </argument>
         </arguments>
@@ -1075,6 +1088,7 @@ image_xscale = 1
             <kind>1</kind>
             <string>if y&gt;480 &amp;&amp; DIE==0
 {
+    global.HP=0
     alarm[1]=20;
     oButtons.LIFE_CHECK=lives
     DIE = 1;
@@ -1105,6 +1119,29 @@ image_xscale = 1
 draw_sprite_ext(SPR,IMG,x,y,image_xscale/2,image_yscale/2,DIR,-1,1)
 
 //draw_text(view_xview[0]+800,view_yview[0]+900,string(air)+"|"+string(SPR)+"|"+string(temp_m))
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="17">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>shake = 14
 </string>
           </argument>
         </arguments>

@@ -23,6 +23,6 @@ for(var i = 0; i < PART_MAX[n]; ++i)
     if (SHFT_T[n]) PART_T[n,i]=irandom_range(PR_T1[n],PR_T2[n]) else PART_T[n,i]=choose(PR_T1[n],PR_T2[n]);
     if (SHFT_F[n]) PART_F[n,i]=irandom_range(PR_F1[n],PR_F2[n]) mod 360 else PART_F[n,i]=choose(PR_F1[n],PR_F2[n]) mod 360;
     if (SHFT_G[n]) PART_G2[n,i]=irandom_range(PR_G1[n],PR_G2[n]) else PART_G2[n,i]=choose(PR_G1[n],PR_G2[n]);
-
+P_E[n,i] = 0;
 P_D[n,i] = 0;
 }

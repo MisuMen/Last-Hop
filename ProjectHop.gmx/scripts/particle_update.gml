@@ -18,8 +18,10 @@ if (PART_T[n,i]==0)
  
  ++P_D[n,i];
  var col = make_colour_rgb(PART_CR[n,i],PART_CG[n,i],PART_CB[n,i]);
- draw_sprite_ext(spr_part_img,PART_I[n],PART_X[n,i],PART_Y[n,i]+PART_G1[n,i],PART_S[n,i],PART_S[n,i],PART_R[n,i],col,PART_CA[n,i])
+ if P_E[n,i]==0 draw_sprite_ext(spr_part_img,PART_I[n],PART_X[n,i],PART_Y[n,i]+PART_G1[n,i],PART_S[n,i],PART_S[n,i],PART_R[n,i],col,PART_CA[n,i])
 if (P_D[n,i]>=PART_D[n,i])
+{
+if (P_END[n]){P_E[n,i]=1}else
 {
 randomize();
     if (SHFT_X[n]) PART_X[n,i]=random_range(PR_X1[n],PR_X2[n]) else PART_X[n,i]=choose(PR_X1[n],PR_X2[n]);
@@ -36,6 +38,7 @@ randomize();
     if (SHFT_CA[n]) PART_CA[n,i]=random_range(PR_CA1[n],PR_CA2[n]) else PART_CA[n,i]=choose(PR_CA1[n],PR_CA2[n]);
  PART_G1[n,i] = 0;
  P_D[n,i]=0;
+}
 }
 }
 else {PART_T[n,i]--}
