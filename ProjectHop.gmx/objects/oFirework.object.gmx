@@ -80,10 +80,10 @@ particle_set(1, x,x,y,y, 16,16, 0,0, 45,45,5,20)
           <argument>
             <kind>1</kind>
             <string>draw_set_blend_mode_ext(bm_one,  bm_inv_src_alpha)
-shader_set(shd_guassianblur)
-particle_update(0, 1, 0.25,0,0, 0,0,0,0.02)
-particle_update(1, 1, -0.25,0,0, 0,0,0,0.02)
-shader_reset()
+//shader_set(shd_guassianblur)
+particle_update(0, 1, 0.25,0,0, 0,0,0,0.02, 4)
+particle_update(1, 1, -0.25,0,0, 0,0,0,0.02, 4)
+//shader_reset()
 draw_set_blend_mode(bm_normal)
 </string>
           </argument>

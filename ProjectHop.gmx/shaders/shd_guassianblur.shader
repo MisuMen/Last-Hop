@@ -14,7 +14,6 @@ void main()
     v_vColour = in_Colour;
     v_vTexcoord = in_TextureCoord;
 }
-
 //######################_==_YOYO_SHADER_MARKER_==_######################@~const int Quality = 8;
 const float Distance = 0.3;
 const int Directions = 16;

@@ -1,4 +1,4 @@
-///particle_update(ind,speed,dir,size,rot,r,g,b,a)
+///particle_update(ind,speed,dir,size,rot,r,g,b,a,blur)
 var n = argument0;
 for(var i = 0; i < PART_MAX[n]; ++i)
 {
@@ -18,7 +18,7 @@ if (PART_T[n,i]==0)
  
  ++P_D[n,i];
  var col = make_colour_rgb(PART_CR[n,i],PART_CG[n,i],PART_CB[n,i]);
- if P_E[n,i]==0 draw_sprite_ext(spr_part_img,PART_I[n],PART_X[n,i],PART_Y[n,i]+PART_G1[n,i],PART_S[n,i],PART_S[n,i],PART_R[n,i],col,PART_CA[n,i])
+ if P_E[n,i]==0 draw_sprite_blur(spr_part_img,PART_I[n],PART_X[n,i],PART_Y[n,i]+PART_G1[n,i],PART_S[n,i],PART_S[n,i],PART_R[n,i],col,PART_CA[n,i],argument9)
 if (P_D[n,i]>=PART_D[n,i])
 {
 if (P_END[n]){P_E[n,i]=1}else
