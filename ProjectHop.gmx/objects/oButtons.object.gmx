@@ -3,7 +3,7 @@
   <spriteName>spr_buttons</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>-1000000</depth>
+  <depth>-10000</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -26,7 +26,8 @@
           <argument>
             <kind>1</kind>
             <string>///Definitions///
-
+screen_width = 1920;
+screen_height = 1080;
 numa=0
 rot=0
 mot1=0
@@ -36,7 +37,7 @@ ACTIVE=1
 INVENTORY=0
 LIFE_CHECK=0;
   fade=0
-  INV_X=1800
+  INV_X=1800//&lt;--
   INV_Y=0
 col = c_green
 image_speed=0
@@ -357,15 +358,143 @@ if (Menu_Page==0)
  }
  }
 }
-
-
-
-
-
-
-
-
-
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Control System
+xx = view_xview[view_index];
+yy = view_yview[view_index];
+with(oPlyer)
+{
+ jk = 0;
+ move_left=0;
+ move_right=0;
+}
+with(oHercules)
+{
+ jk = 0;
+ move_left=0;
+ move_right=0;
+}
+global.DUCK=0
+if instance_number(oPlyer)
+{
+if oPlyer.stall==0
+{
+if os_type = os_windows
+{
+            //////////////LEFT AND RIGHT BUTTONS/////////////////
+            if keyboard_check_direct(vk_right)
+            {if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user0)}else{with(oPlyer)event_perform(ev_other,ev_user0)}}//right
+            if keyboard_check_direct(vk_left) {if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user1)}else{with(oPlyer)event_perform(ev_other,ev_user1)}}//left
+            ///////////JUMP,DUCK, AND POWER BUTTONS//////////////
+             if keyboard_check_pressed(vk_down)
+             {global.DUCK=1; if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user2)}else{if (oPlyer.pressed==0){with(oPlyer)event_perform(ev_other,ev_user2)}}}//duck
+             if keyboard_check_pressed(vk_up)
+             {if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user3)}else{with(oPlyer)event_perform(ev_other,ev_user3)}}//jump
+             if keyboard_check_pressed(vk_enter){if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user4)}else{with(oPlyer)event_perform(ev_other,ev_user4)}}//power
+            //////////////////MENU BUTTON////////////////////////
+}
+if (INVENTORY==0)
+{
+ duration++/////////////////////////////////////////////////////////&lt;-------------TIME HOW LONG YOU STAYED IN THE STAGE
+}
+for(var i = 0; i &lt;= 1; i++)
+        {
+        if instance_number(oPlyer)&gt;0
+        {
+         if device_mouse_check_button(i,mb_left)
+            {
+            var mouse_xx = device_mouse_x(i),
+            var mouse_yy = device_mouse_y(i);
+            if (INVENTORY==0)
+            {
+            //////////////LEFT AND RIGHT BUTTONS/////////////////
+            if point_distance(xx,yy+screen_height,mouse_xx,mouse_yy)&lt;480
+            {
+             if point_direction(xx,yy+screen_height,mouse_xx,mouse_yy)&lt;45 
+             {if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user0)}else{with(oPlyer)event_perform(ev_other,ev_user0)}}//right
+             else {if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user1)}else{with(oPlyer)event_perform(ev_other,ev_user1)}}//left
+            }
+            //////////////////POWER BUTTON////////////////////////
+            if mouse_xx &gt; xx+800 &amp;&amp; mouse_xx &lt; xx+1120
+            {
+             if mouse_yy &gt; yy+0 &amp;&amp; mouse_yy &lt; yy+200
+             {
+              if instance_number(oHercules)&gt;0 &amp;&amp; global.METER==100 &amp;&amp; slide_down==0{with(oHercules)event_perform(ev_other,ev_user4)}else{with(oPlyer)event_perform(ev_other,ev_user4)}//power
+             }
+            }
+            //////////////////Inventory/////////////////////////
+            }
+            }
+         if device_mouse_check_button_pressed(i,mb_left)
+         {
+            if (point_distance(xx+1810,yy+120,mouse_xx,mouse_yy)&lt;100)&amp;&amp;(fade==0)&amp;&amp;(INVENTORY==0)
+            {
+             INVENTORY=1
+            }
+             if (point_distance(xx+1810,yy+120,mouse_xx,mouse_yy)&lt;100)&amp;&amp;(fade&gt;=1)&amp;&amp;(INVENTORY)
+             {
+                INVENTORY=0
+                fade=0
+                INV_X=1850
+                INV_Y=0
+             }
+         }
+        
+         if device_mouse_check_button_pressed(i,mb_left) &amp;&amp; (oPlyer.hover==0)
+         {
+             ///////////JUMP,DUCK //////////////
+            var dist = point_distance(xx+screen_width,yy+screen_height,mouse_xx,mouse_yy);
+            if dist &lt; 480 &amp;&amp; dist &gt; 0
+            {
+             if point_direction(xx+screen_width,yy+screen_height,mouse_xx,mouse_yy)&gt;=135 
+             {global.DUCK=1; if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user2)}else{if (oPlyer.pressed==0){with(oPlyer)event_perform(ev_other,ev_user2)}}}//duck
+             if point_direction(xx+screen_width,yy+screen_height,mouse_xx,mouse_yy)&lt;135 
+             {if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user3)}else{with(oPlyer)event_perform(ev_other,ev_user3)}}//jump
+            }
+         }
+         /*if device_mouse_check_button(i,mb_left) &amp;&amp; (oPlyer.hover)
+         {
+             ///////////DUCK//////////////
+            var dist = point_distance(xx+1920,yy+1080,mouse_xx,mouse_yy);
+            if dist &lt; 480 &amp;&amp; dist &gt; 0
+            {
+             if point_direction(xx+1920,yy+1080,mouse_xx,mouse_yy)&gt;=135
+             {global.DUCK=1; if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user2)}else{if (oPlyer.pressed==0){with(oPlyer)event_perform(ev_other,ev_user2)}}}//duck
+             //if point_direction(xx+1920,yy+1080,mouse_xx,mouse_yy)&lt;135 
+             //{if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user3)}else{with(oPlyer)event_perform(ev_other,ev_user3)}}//jump
+            }
+         }*/
+         if device_mouse_check_button(i,mb_left) &amp;&amp; (oPlyer.hover==0) &amp;&amp; (oPlyer.air==0) &amp;&amp; (oPlyer.vsp==0)
+         {
+             ///////////DUCK//////////////
+            var dist = point_distance(xx+screen_width,yy+screen_height,mouse_xx,mouse_yy);
+            if dist &lt; 480 &amp;&amp; dist &gt; 0
+            {
+             if point_direction(xx+screen_width,yy+screen_height,mouse_xx,mouse_yy)&gt;=135 
+             {global.DUCK=1; if instance_number(oHercules)==0{if (oPlyer.pressed==0){with(oPlyer)event_perform(ev_other,ev_user5)}}}//just duck only
+            }
+         }
+         }
+         }}}
 </string>
           </argument>
         </arguments>
@@ -389,6 +518,9 @@ if (Menu_Page==0)
           <argument>
             <kind>1</kind>
             <string>///SAVE ALL DATA IN HERE [INI]
+with(oResetSurf){instance_destroy()}
+application_surface_draw_enable(1)
+draw_enable_drawevent(1)
 if lives==0
 {
 ////Game Over
@@ -475,129 +607,13 @@ shader_reset()
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Control System
-xx = view_xview[view_index];
-yy = view_yview[view_index];
-with(oPlyer)
-{
- jk = 0;
- move_left=0;
- move_right=0;
-}
-with(oHercules)
-{
- jk = 0;
- move_left=0;
- move_right=0;
-}
-global.DUCK=0
-if instance_number(oPlyer)
-{
-if oPlyer.stall==0
-{
-if os_type = os_windows
-{
-            //////////////LEFT AND RIGHT BUTTONS/////////////////
-            if keyboard_check_direct(vk_right)
-            {if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user0)}else{with(oPlyer)event_perform(ev_other,ev_user0)}}//right
-            if keyboard_check_direct(vk_left) {if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user1)}else{with(oPlyer)event_perform(ev_other,ev_user1)}}//left
-            ///////////JUMP,DUCK, AND POWER BUTTONS//////////////
-             if keyboard_check_pressed(vk_down)
-             {global.DUCK=1; if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user2)}else{if (oPlyer.pressed==0){with(oPlyer)event_perform(ev_other,ev_user2)}}}//duck
-             if keyboard_check_pressed(vk_up)
-             {if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user3)}else{with(oPlyer)event_perform(ev_other,ev_user3)}}//jump
-             if keyboard_check_pressed(vk_enter){if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user4)}else{with(oPlyer)event_perform(ev_other,ev_user4)}}//power
-            //////////////////MENU BUTTON////////////////////////
-}
-if (INVENTORY==0)
-{
- duration++/////////////////////////////////////////////////////////&lt;-------------TIME HOW LONG YOU STAYED IN THE STAGE
-}
-for(var i = 0; i &lt;= 3; i++)
-        {
-        if instance_number(oPlyer)&gt;0
-        {
-         if device_mouse_check_button(i,mb_left)
-            {
-            var mouse_xx = device_mouse_x(i),
-            var mouse_yy = device_mouse_y(i);
-            if (INVENTORY==0)
-            {
-            //////////////LEFT AND RIGHT BUTTONS/////////////////
-            if point_distance(xx,yy+1080,mouse_xx,mouse_yy)&lt;480
-            {
-             if point_direction(xx,yy+1080,mouse_xx,mouse_yy)&lt;45 
-             {if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user0)}else{with(oPlyer)event_perform(ev_other,ev_user0)}}//right
-             else {if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user1)}else{with(oPlyer)event_perform(ev_other,ev_user1)}}//left
-            }
-            //////////////////POWER BUTTON////////////////////////
-            if mouse_xx &gt; xx+800 &amp;&amp; mouse_xx &lt; xx+1120
-            {
-             if mouse_yy &gt; yy+0 &amp;&amp; mouse_yy &lt; yy+200
-             {
-              if instance_number(oHercules)&gt;0 &amp;&amp; global.METER==100 &amp;&amp; slide_down==0{with(oHercules)event_perform(ev_other,ev_user4)}else{with(oPlyer)event_perform(ev_other,ev_user4)}//power
-             }
-            }
-            //////////////////Inventory/////////////////////////
-            }
-            }
-         if device_mouse_check_button_pressed(i,mb_left)
-         {
-            if (point_distance(xx+1810,yy+120,mouse_xx,mouse_yy)&lt;100)&amp;&amp;(fade==0)&amp;&amp;(INVENTORY==0)
-            {
-             INVENTORY=1
-            }
-             if (point_distance(xx+1810,yy+120,mouse_xx,mouse_yy)&lt;100)&amp;&amp;(fade&gt;=1)&amp;&amp;(INVENTORY)
-             {
-                INVENTORY=0
-                fade=0
-                INV_X=1850
-                INV_Y=0
-             }
-         }
-        
-         if device_mouse_check_button_pressed(i,mb_left) &amp;&amp; (oPlyer.hover==0)
-         {
-             ///////////JUMP,DUCK //////////////
-            var dist = point_distance(xx+1920,yy+1080,mouse_xx,mouse_yy);
-            if dist &lt; 480 &amp;&amp; dist &gt; 0
-            {
-             if point_direction(xx+1920,yy+1080,mouse_xx,mouse_yy)&gt;=135 
-             {global.DUCK=1; if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user2)}else{if (oPlyer.pressed==0){with(oPlyer)event_perform(ev_other,ev_user2)}}}//duck
-             if point_direction(xx+1920,yy+1080,mouse_xx,mouse_yy)&lt;135 
-             {if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user3)}else{with(oPlyer)event_perform(ev_other,ev_user3)}}//jump
-            }
-         }
-         /*if device_mouse_check_button(i,mb_left) &amp;&amp; (oPlyer.hover)
-         {
-             ///////////DUCK//////////////
-            var dist = point_distance(xx+1920,yy+1080,mouse_xx,mouse_yy);
-            if dist &lt; 480 &amp;&amp; dist &gt; 0
-            {
-             if point_direction(xx+1920,yy+1080,mouse_xx,mouse_yy)&gt;=135
-             {global.DUCK=1; if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user2)}else{if (oPlyer.pressed==0){with(oPlyer)event_perform(ev_other,ev_user2)}}}//duck
-             //if point_direction(xx+1920,yy+1080,mouse_xx,mouse_yy)&lt;135 
-             //{if instance_number(oHercules)&gt;0{with(oHercules)event_perform(ev_other,ev_user3)}else{with(oPlyer)event_perform(ev_other,ev_user3)}}//jump
-            }
-         }*/
-         if device_mouse_check_button(i,mb_left) &amp;&amp; (oPlyer.hover==0) &amp;&amp; (oPlyer.air==0) &amp;&amp; (oPlyer.vsp==0)
-         {
-             ///////////DUCK//////////////
-            var dist = point_distance(xx+1920,yy+1080,mouse_xx,mouse_yy);
-            if dist &lt; 480 &amp;&amp; dist &gt; 0
-            {
-             if point_direction(xx+1920,yy+1080,mouse_xx,mouse_yy)&gt;=135 
-             {global.DUCK=1; if instance_number(oHercules)==0{if (oPlyer.pressed==0){with(oPlyer)event_perform(ev_other,ev_user5)}}}//just duck only
-            }
-         }
-         }
-         }}}
+            <string>///Draw screen displays
 ///////////////Button Layout//////////////////
 draw_set_alpha(0.2)
-draw_circle_colour(xx,yy+1080,480,c_white,c_white,0)
-draw_line_width_colour(xx,yy+1080,xx+lengthdir_x(480,45),yy+1080+lengthdir_y(480,45),16,c_ltgray,c_ltgray)
-draw_circle_colour(xx+1920,yy+1080,480,c_white,c_white,0)
-draw_line_width_colour(xx+1920,yy+1080,xx+1920+lengthdir_x(480,135),yy+1080+lengthdir_y(480,135),16,c_ltgray,c_ltgray)
+draw_circle_colour(xx,yy+screen_height,480,c_white,c_white,0)
+draw_line_width_colour(xx,yy+screen_height,xx+lengthdir_x(480,45),yy+screen_height+lengthdir_y(480,45),16,c_ltgray,c_ltgray)
+draw_circle_colour(xx+screen_width,yy+screen_height,480,c_white,c_white,0)
+draw_line_width_colour(xx+screen_width,yy+screen_height,xx+1920+lengthdir_x(480,135),yy+screen_height+lengthdir_y(480,135),16,c_ltgray,c_ltgray)
 draw_set_alpha(1)
 
 ////////////////SPECS (HUD)///////////////////

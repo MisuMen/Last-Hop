@@ -119,6 +119,7 @@
       <object>objects\oPartSys</object>
       <object>objects\oGameOver</object>
       <object>objects\oScrollBack</object>
+      <object>objects\oResetSurf</object>
     </objects>
     <objects name="parents">
       <object>objects\oBad1</object>

@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>10000000</depth>
+  <depth>-100000000</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -25,16 +25,29 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>b_width = 1100
-fondo[0]= back1
-fondo[1]= back1_2
-fondo[2]= back1_3
+            <string>xmargen = 0
+ymargen = 0
+display_set_gui_maximise(1,1,0,0)
+if (display_get_gui_width()/display_get_gui_height() &lt;= 1.8)
+{
+    Screen_width = display_get_gui_width();
+    Screen_height= floor(Screen_width/(1920/1080));
+    ymargen = (abs(display_get_gui_height()-Screen_height)/2);
+    show_debug_message(string(ymargen))
+}else
+{
+    Screen_height = display_get_gui_height();
+    Screen_width= Screen_height/(1920/1080);
+    xmargen = (abs(display_get_gui_width()-Screen_width)/2);
+}
+application_surface_draw_enable(0)
+inc = 0
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="8" enumb="0">
+    <event eventtype="3" enumb="0">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -51,29 +64,36 @@ fondo[2]= back1_3
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>texture_set_interpolation(0)
-var xx = (view_xview[0]/1.2)+floor((view_xview[0]/4.2)/b_width)*b_width;
-
-draw_background(fondo[2],xx-b_width,0)
-draw_background(fondo[2],xx,0)
-draw_background(fondo[2],xx+b_width,0)
-draw_background(fondo[2],xx+(b_width*2),0)
-
-xx = (view_xview[0]/2)+floor((view_xview[0]/2)/b_width)*b_width;
-
-draw_background(fondo[1],xx-b_width,0)
-draw_background(fondo[1],xx,0)
-draw_background(fondo[1],xx+b_width,0)
-draw_background(fondo[1],xx+(b_width*2),0)
-
-xx = floor(view_xview[0]/b_width)*b_width;
-
-draw_background(fondo[0],xx-b_width,0)
-draw_background(fondo[0],xx,0)
-draw_background(fondo[0],xx+b_width,0)
-draw_background(fondo[0],xx+(b_width*2),0)
-
-texture_set_interpolation(1)
+            <string>///Frame skip
+inc=!inc
+if (inc) draw_enable_drawevent(1);
+else
+draw_enable_drawevent(0);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>draw_rectangle_colour(-20,-20,1950,1200,0,0,0,0,0)
+draw_surface_stretched(application_surface,xmargen,ymargen,Screen_width,Screen_height)
+//draw_rectangle_colour(0,0,32,32,c_white,c_white,c_white,c_white,0)
 </string>
           </argument>
         </arguments>

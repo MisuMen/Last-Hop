@@ -1115,7 +1115,9 @@ image_xscale = 1
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if DIE == 1 {}//SPR = spr_dead
+            <string>///Draw Crickit
+
+if DIE == 1 {}//SPR = spr_dead
 draw_sprite_ext(SPR,IMG,x,y,image_xscale/2,image_yscale/2,DIR,-1,1)
 
 //draw_text(view_xview[0]+800,view_yview[0]+900,string(air)+"|"+string(SPR)+"|"+string(temp_m))
